@@ -9,11 +9,11 @@ class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         if n == 0:
             return ['']
-        ans = []
-        for c in range(n):
-            for left in self.generateParenthesis(c):
-                for right in self.generateParenthesis(n-1-c):
-                    ans.append('({}){}'.format(left, right))
+        ans = list()
+        for i in range(n):
+            for l in self.generateParenthesis(i):
+                for r in self.generateParenthesis(n-i-1):
+                    ans.append(f'({l}){r}')
         return ans  
 # @lc code=end
 

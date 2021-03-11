@@ -2,5 +2,6 @@
     "files.associations": {
         "xstring": "cpp",
         "queue": "cpp"
-    }
+    },
+    "python.pythonPath": "D:\\xin\\anaconda\\envs\\ana3python37\\python.exe"
 }
