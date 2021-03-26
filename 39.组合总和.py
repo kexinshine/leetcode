@@ -10,8 +10,6 @@ class Solution:
         ans = []
         temp = []
         def recursion(idx, res):
-            print(idx)
-            print(temp)
             if idx >= len(candidates) or res >= target:
                 if res == target:
                     ans.append(temp[:])
