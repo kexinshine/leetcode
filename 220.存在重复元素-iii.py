@@ -7,24 +7,20 @@
 # @lc code=start
 class Solution:
     def containsNearbyAlmostDuplicate(self, nums: List[int], k: int, t: int) -> bool:
-        if not nums:
-            return False
-        count=collections.defaultdict(list)
-        for i in range(len(nums)):
-            count[nums[i]].append(i)
-        test_list=sorted(count.items(),key=lambda x:x[0])
-        l=0
-        r=0
-        while True:
-            if abs(test_list[r][0] - test_list[l][0]) <= t:
-                for x in test_list[r][1]:
-                    for y in test_list[l][1]:
-                        if abs(x - y) <= k and x!=y:
-                            return True
-            if l == r and l == len(test_list) - 1:
-                return False
-            else:
-                l += 1
-                r = l
+        if t < 0:   return False        
+
+        from sortedcontainers import SortedList
+        window = SortedList()
+
+        for i,num in enumerate(nums):
+            idx = window.bisect_left(num - t)   #第一个 >= (num-t)的index
+            if idx < len(window) and window[idx] <= (num + t):
+                return True
+
+            window.add(num)                     #进R
+            if i >= k:                          #弹L
+                window.remove(nums[i-k])
+
+        return False
 # @lc code=end
 

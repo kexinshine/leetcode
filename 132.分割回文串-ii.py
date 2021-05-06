@@ -8,29 +8,22 @@
 class Solution:
     def minCut(self, s: str) -> int:
         n = len(s)
-        f = [[True] * n for _ in range(n)]
+        g = [[True] * n for _ in range(n)]
 
         for i in range(n - 1, -1, -1):
             for j in range(i + 1, n):
-                f[i][j] = (s[i] == s[j]) and f[i + 1][j - 1]
+                g[i][j] = (s[i] == s[j]) and g[i + 1][j - 1]
 
-        self.res=float('inf')
-        ans = list()
+        f = [float("inf")] * n
+        for i in range(n):
+            if g[0][i]:
+                f[i] = 0
+            else:
+                for j in range(i):
+                    if g[j + 1][i]:
+                        f[i] = min(f[i], f[j] + 1)
+        
+        return f[n - 1]
 
-        def dfs(i: int):
-            if i == n:
-                self.res=min(len(ans),self.res)
-                return
-            
-            for j in range(i, n):
-                if f[i][j]:
-                    ans.append(s[i:j+1])
-                    dfs(j + 1)
-                    ans.pop()
-
-        dfs(0)
-        if self.res:
-            return self.res-1
-        return 0
 # @lc code=end
 

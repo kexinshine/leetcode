@@ -7,26 +7,22 @@
 # @lc code=start
 class Solution:
     def shortestPalindrome(self, s: str) -> str:
-        if len(set(s))==1:
-            return s
-        if not s:
-            return s
-        n=len(s)
-        dp=[[True]*n for _ in range(n)]
-        for i in range(n-1,-1,-1):
-            for j in range(i+1,n):
-                dp[i][j]=(s[i]==s[j] and dp[i+1][j-1])
-        temp=dp[0]
+        n = len(s)
+        base, mod = 131, 10**9 + 7
+        left = right = 0
+        mul = 1
+        best = -1
+        
         for i in range(n):
-            if not temp[i]:
-                continue
-            max_index=i
-        if max_index==n-1:
-            return s
-        ans=s
-        for j in range(max_index+1,n):
-            ans=s[j]+ans
-        return ans
+            left = (left * base + ord(s[i])) % mod
+            right = (right + mul * ord(s[i])) % mod
+            if left == right:
+                best = i
+            mul = mul * base % mod
+        
+        add = ("" if best == n - 1 else s[best+1:])
+        return add[::-1] + s
+
         
 # @lc code=end
 

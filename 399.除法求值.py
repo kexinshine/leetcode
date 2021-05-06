@@ -7,27 +7,32 @@
 # @lc code=start
 class Solution:
     def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
-        word_dict=collections.defaultdict(int)
+        graph = defaultdict(int)
+        set1 = set()
         for i in range(len(equations)):
-            a=equations[i][0]
-            b=equations[i][1]
-            keys=word_dict.keys()
-            if a not in keys and b not in keys:
-                word_dict[b]=1
-                word_dict[a]=values[i]
-            elif a not in keys:
-                word_dict[a]=word_dict[b]*values[i]
-            elif b not in keys:
-                word_dict[b]=word_dict[a]/values[i]
-        ans=list()
-        for q in queries:
-            a=word_dict.get(q[0])
-            b=word_dict.get(q[1])
-            if a and b:
-                ans.append(a/b)
+            a, b = equations[i]
+            graph[(a, b)] = values[i]
+            graph[(b, a)] = 1/values[i]
+            set1.add(a)
+            set1.add(b)
+
+        # Floyd算法 求图中任意2点距离
+        arr = list(set1)
+        for k in arr:
+            for i in arr:
+                for j in arr:
+                    if graph[(i, k)] and graph[(k, j)]:
+                        graph[(i, j)] = graph[(i, k)] * graph[(k, j)]
+        
+        res = []
+        for x, y in queries:
+            if graph[(x, y)]:
+                res.append(graph[(x, y)])
             else:
-                ans.append(-1.0)
-        return ans
+                res.append(-1)
+        return res
+
+
 
 # @lc code=end
 
